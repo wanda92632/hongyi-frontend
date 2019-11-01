@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="/css/xadmin.css">
     <script src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/common/common.js"></script>
+    <script type="text/javascript" src="/js/common/load.js"></script>
+    <script type="text/javascript" src="/js/member/member.js"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -75,55 +79,14 @@
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="id" value="1" lay-skin="primary">
-                                </td>
-                                <td>${user.id}</td>
-                                <td>${user.username!}</td>
-                                <td>${user.nickname!}</td>
-                                <td>${user.sex!}</td>
-                                <td>${user.phone!}</td>
-                                <td>${user.email!}</td>
-                                <td>${user.createTime!}</td>
-                                <td class="td-status">
-                                    <#if (user.status==0)>
-                                        <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span>
-                                    <#else>
-                                        <span class="layui-btn layui-btn-warm layui-btn-mini">禁用</span>
-                                    </#if>
-                                </td>
-                                <td class="td-manage">
-                                    <a onclick="member_stop(this,'10001')" href="javascript:;" title="启用">
-                                        <i class="layui-icon">&#xe601;</i>
-                                    </a>
-                                    <a title="编辑" onclick="xadmin.open('编辑','member-edit.html',600,400)"
-                                       href="javascript:;">
-                                        <i class="layui-icon">&#xe642;</i>
-                                    </a>
-                                    <a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码"
-                                       href="javascript:;">
-                                        <i class="layui-icon">&#xe631;</i>
-                                    </a>
-                                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                                        <i class="layui-icon">&#xe640;</i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tbody id="tbody">
+                            
                         </tbody>
                     </table>
                 </div>
                 <div class="layui-card-body ">
-                    <div class="page">
-                        <div>
-                            <a class="prev" href="">&lt;&lt;</a>
-                            <a class="current" href="">1</a>
-                            <span class="num">2</span>
-                            <a class="num" href="">3</a>
-                            <a class="num" href="">489</a>
-                            <a class="next" href="">&gt;&gt;</a>
-                        </div>
+                    <div class="page" id="elem">
+                        <!-- 分页按钮 -->
                     </div>
                 </div>
             </div>
