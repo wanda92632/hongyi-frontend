@@ -1,8 +1,9 @@
 //用户登录
 layui.use("form", function() {
-  //判断是否已登录
+  //判断是否已存在 token
   if (window.localStorage.getItem("token") != undefined) {
-    if (checkToken()) {
+      //验证 token 的有效性
+      if (checkToken()) {
       route('/frontend/admin/index.html');
     }
   }
@@ -10,6 +11,7 @@ layui.use("form", function() {
   var form = layui.form;
   //监听提交
   form.on("submit(login)", function(data) {
+    layer.msg('登录中...');
     var param = data.field;
     $.ajax({
       url: "/hongyi/admin/login",
@@ -19,17 +21,16 @@ layui.use("form", function() {
       contentType: "application/json",
       success: function(result) {
         if (result.success) {
+          layer.msg('登录成功:');
           //存储 token
           window.localStorage.setItem("token", result.token);
-          layui.data;
           //页面跳转
           route('/frontend/admin/index.html');
         } else {
-          layer.msg("登录失败:" + result.errMsg);
         }
       },
       error: function(xhr, status, error) {
-        layer.msg(xhr.statusText + ":" + xhr.status);
+        layer.msg('登陆失败:服务器错误');
       }
     });
     return false;

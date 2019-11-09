@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="/css/xadmin.css">
     <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/common/common.js" charset="utf-8"></script>
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -21,7 +23,7 @@
 <body>
 <div class="layui-fluid">
     <div class="layui-row">
-        <form action="/hongyi/user/register" method="post" class="layui-form">
+        <form method="post" class="layui-form layui-col-xs-offset2">
             <div class="layui-form-item">
                 <label for="L_username" class="layui-form-label">
                     <span class="x-red">*</span>用户名</label>
@@ -30,14 +32,14 @@
                            autocomplete="off" class="layui-input"></div>
             </div>
             <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">
+                <label for="L_password" class="layui-form-label">
                     <span class="x-red">*</span>密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" id="L_password" name="password" required="" lay-verify="pass"
+                    <input type="password" id="L_password" name="password" required="" lay-verify="password"
                            autocomplete="off" class="layui-input" placeholder="6到16个字符"></div>
             </div>
             <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">
+                <label for="L_repassword" class="layui-form-label">
                     <span class="x-red">*</span>确认密码</label>
                 <div class="layui-input-inline">
                     <input type="password" id="L_repassword" name="repassword" required="" lay-verify="repassword"
@@ -54,7 +56,7 @@
                 <label for="L_email" class="layui-form-label">
                     邮箱</label>
                 <div class="layui-input-inline">
-                    <input type="text" id="L_email" name="email"  autocomplete="off"
+                    <input type="email" id="L_email" name="email"  autocomplete="off"
                            class="layui-input"></div>
             </div>
             <div class="layui-form-item">
@@ -65,8 +67,7 @@
                            class="layui-input"></div>
             </div>
             <div class="layui-form-item">
-                <label for="L_submit" class="layui-form-label"></label>
-                <button class="layui-btn" lay-filter="add" lay-submit="">增加</button>
+                <button class="layui-btn layui-col-xs-offset6" lay-filter="add" lay-submit="">增加</button>
             </div>
         </form>
     </div>
@@ -94,11 +95,12 @@
                 }
             });
 
-            监听提交
+            //监听提交
             form.on('submit(add)',
                 function (data) {
                     console.log(data);
                     //发异步，把数据提交给php
+                    $.post('/hongyi/admin/register', JSON.stringify(data.field));
                     layer.alert("增加成功", {
                             icon: 6
                         },

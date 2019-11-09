@@ -15,6 +15,7 @@
     <script type="text/javascript" src="/js/common/common.js"></script>
     <script type="text/javascript" src="/js/common/load.js"></script>
     <script type="text/javascript" src="/js/member/member.js"></script>
+    <script type="text/javascript" src="/js/user/user.js"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -50,15 +51,16 @@
                         </div>
                         <div class="layui-inline layui-show-xs-block">
                             <button class="layui-btn" lay-submit="" lay-filter="sreach"><i
-                                        class="layui-icon">&#xe615;</i></button>
+                                    class="layui-icon">&#xe615;</i></button>
                         </div>
                     </form>
                 </div>
                 <div class="layui-card-header">
-                    <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除
+                    <button class="layui-btn layui-btn-danger" onclick="delAll()">
+                        <i class="layui-icon"></i>批量删除
                     </button>
-                    <button class="layui-btn" onclick="xadmin.open('添加用户','/hongyi/admin/member-add',600,400)"><i
-                                class="layui-icon"></i>添加
+                    <button class="layui-btn" onclick="xadmin.open('添加用户','member-add.html',600,400)">
+                        <i class="layui-icon"></i>添加
                     </button>
                 </div>
                 <div class="layui-card-body layui-table-body layui-table-main">
@@ -80,7 +82,7 @@
                         </tr>
                         </thead>
                         <tbody id="tbody">
-                            
+                        <!--表格内容-->
                         </tbody>
                     </table>
                 </div>
@@ -125,24 +127,25 @@
     });
 
     /*用户-停用*/
-    function member_stop(obj, id) {
-        layer.confirm('确认要停用吗？', function (index) {
-
+    function member_stop(obj, userId) {
+        layer.confirm('确认要' + $(obj).attr('title') + '吗？', function (index) {
             if ($(obj).attr('title') == '启用') {
+                // TODO 发异步把用户状态进行更改
+                modifyUserStatus(userId, '0');
 
-                //发异步把用户状态进行更改
                 $(obj).attr('title', '停用')
+                $(obj).find('i').html('&#xe601;');
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!', {icon: 1, time: 1000});
+            } else {
+                // TODO 发异步把用户状态进行更改
+                modifyUserStatus(userId, '1');
+
+                $(obj).attr('title', '启用')
                 $(obj).find('i').html('&#xe62f;');
 
                 $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!', {icon: 5, time: 1000});
-
-            } else {
-                $(obj).attr('title', '启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!', {icon: 5, time: 1000});
+                layer.msg('已停用!', {icon: 2, time: 1000});
             }
 
         });
@@ -152,6 +155,8 @@
     function member_del(obj, id) {
         layer.confirm('确认要删除吗？', function (index) {
             //发异步删除数据
+            $.post('/hongyi/admin/removeuser', JSON.stringify(id));
+
             $(obj).parents("tr").remove();
             layer.msg('已删除!', {icon: 1, time: 1000});
         });
@@ -170,6 +175,7 @@
 
         layer.confirm('确认要删除吗？' + ids.toString(), function (index) {
             //捉到所有被选中的，发异步进行删除
+            $.post('/hongyi/admin/batchremoveuser', JSON.stringify(ids));
             layer.msg('删除成功', {icon: 1});
             $(".layui-form-checked").not('.header').parents('tr').remove();
         });
